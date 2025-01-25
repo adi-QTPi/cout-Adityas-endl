@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diary Entry</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles2.css')}}">
+    <style>
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .form-container, .ai-suggestions {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-container h2, .ai-suggestions h2 {
+            color: #ff7e5f;
+            margin-bottom: 15px;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-container textarea {
+            width: 100%;
+            height: 150px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .form-container .submit-button {
+            background-color: #ff7e5f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .form-container .submit-button:hover {
+            background-color: #feb47b;
+        }
+
+        .ai-suggestions {
+            min-height: 200px;
+        }
+
+        .ai-suggestions p {
+            color: #555;
+            font-size: 16px;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <!-- <div class="logo">
+                <img id="logoImage" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo" >
+                <h1>Diree</h1><h2>: Note Yourself, Know Yourself...</h2>
+            </div> -->
+            <div class="nav-buttons">
+                
+                <button id="ask-ai-button" class="ask-ai-button" onclick="window.location.href='{{ url_for('main.AskAI') }}';">Ask AI</button>
+                <button id="New entries" class="New entries" onclick="window.location.href='{{ url_for('main.newEntry') }}';">New entries</button>
+                <button id="logout-button" class="logout-button" onclick="window.location.href='{{ url_for('main.logout') }}';">Logout</button>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="content">
+            <!-- Form Container -->
+            <div class="formContainer ai-suggestions" id="formContainer">
+                <h2>Your Daily Diary will be here....</h2>
+                <!-- <p>AI will provide suggestions, tips, or prompts here based on your diary entries.</p> -->
+            </div>
+
+            <!-- AI Suggestions Container -->
+            <div class="ai-suggestions" id="aiSuggestions">
+                <h2>AI Suggestions</h2>
+                
+            </div>
+        </div>
+        <!-- <div><button>New entries</button></div> -->
+        <!-- Calendar -->
+        <div class="calendar">
+            <div class="header">
+                <button id="prev">Previous</button>
+                <h2 id="monthYear"></h2>
+                <button id="next">Next</button>
+            </div>
+            <div class="days">
+                <div class="day">Sun</div>
+                <div class="day">Mon</div>
+                <div class="day">Tue</div>
+                <div class="day">Wed</div>
+                <div class="day">Thu</div>
+                <div class="day">Fri</div>
+                <div class="day">Sat</div>
+            </div>
+            <div id="dates" class="dates"></div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 Your Diary. All rights reserved.</p>
+            <button class="contact-button">Contact Us</button>
+        </div>
+    </footer>
+    <script>
+        const monthYear = document.getElementById('monthYear');
+        const datesContainer = document.getElementById('dates');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        
+    
+       let currentDate = new Date();
+//         function formatStructuredText(text) {
+//     // Split the text into sections by "###" headings
+//     const sections = text.split("###").map(section => section.trim()).filter(Boolean);
+
+//     // Initialize an empty string to hold the formatted HTML
+//     let formattedHTML = "";
+
+//     // Process each section
+//     sections.forEach(section => {
+//         // Split the section into lines
+//         const lines = section.split("\n").map(line => line.trim()).filter(Boolean);
+
+//         // The first line is the heading, the rest are the content
+//         const heading = lines[0];
+//         const content = lines.slice(1);
+
+//         // Add the heading to the formatted HTML
+//         formattedHTML += `<h3>${heading}</h3>\n`;
+
+//         // Check if the content contains bullet points
+//         if (content.some(line => line.startsWith("-"))) {
+//             formattedHTML += "<ul>\n";
+//             content.forEach(line => {
+//                 if (line.startsWith("-")) {
+//                     formattedHTML += `<li>${line.slice(1).trim()}</li>\n`;
+//                 } else {
+//                     formattedHTML += `<p>${line}</p>\n`;
+//                 }
+//             });
+//             formattedHTML += "</ul>\n";
+//         } else {
+//             // If no bullet points, format as paragraphs
+//             content.forEach(line => {
+//                 formattedHTML += `<p>${line}</p>\n`;
+//             });
+//         }
+//     });
+
+//     return formattedHTML;
+// }
+
+
+
+        function fetchDiaryEntries(date) {
+    fetch('/get_entries_by_date', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ date: date }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            const formContainer = document.querySelector('#formContainer');
+            const aiSuggestionsContainer = document.querySelector('#aiSuggestions');
+            formContainer.innerHTML = '<h2>Diary Entries</h2>';
+
+            if (data.error) {
+                formContainer.innerHTML += `<p>${data.error}</p>`;
+                aiSuggestionsContainer.innerHTML+= `<p>${data.error}</p>`;
+            } else if (data.length === 0) {
+                formContainer.innerHTML += '<p>No entries found for this date.</p>';
+                aiSuggestionsContainer.innerHTML+= `<p>No entries found for this date.</p>`;
+            } else {
+                data.forEach((entry) => {
+                    formContainer.innerHTML += `
+                        <div class="entry">
+                            <p><strong>${entry.timestamp}</strong></p>
+                            <p>${entry.text}</p>
+                        </div>
+                    `;
+                    aiSuggestionsContainer.innerHTML += `
+                        <div class="entry">
+                            <p><strong>${entry.timestamp}</strong></p>
+                            <p>${entry.AIsummary}</p>
+                           
+                        </div>
+                      
+                    `;
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching entries:', error);
+        });
+
+       
+}
+     
+
+
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            monthYear.textContent = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+            // Clear previous dates
+            datesContainer.innerHTML = '';
+
+            // Get the first day of the month
+            const firstDay = new Date(year, month, 1).getDay();
+            // Get the number of days in the month
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Fill in the days of the month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDiv = document.createElement('div');
+                datesContainer.appendChild(emptyDiv);
+            }
+
+            for (let day = 1; day <= totalDays; day++) {
+                const dateDiv = document.createElement('div');
+                dateDiv.textContent = day;
+                dateDiv.classList.add('date');
+
+                // Add click event listener to each date
+                dateDiv.addEventListener('click', () => {
+    const selectedDate = new Date(year, month, day);
+    selectedDate.setHours(0, 0, 0, 0); // Normalize time to midnight
+
+    // Get the UTC date in the correct format (YYYY-MM-DD)
+    const formattedDate = selectedDate.toISOString().split('T')[0]; 
+
+    // Fix the issue by subtracting one day from the selected date
+    selectedDate.setDate(selectedDate.getDate() + 1);
+    const fixedDate = selectedDate.toISOString().split('T')[0]; // Get the correct date
+
+    console.log("Selected Date:", fixedDate); // Check the fixed date
+    fetchDiaryEntries(fixedDate); // Send corrected date to the backend
+});
+
+
+                datesContainer.appendChild(dateDiv);
+            }
+        }
+
+        prevButton.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        });
+
+        // Initial render
+        renderCalendar();
+    </script>
+</body>
+</html>

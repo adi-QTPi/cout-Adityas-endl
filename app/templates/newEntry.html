@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Entry</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+</head>
+<body>
+    <header>
+        <nav>
+            <!-- <div class="logo">
+                <img id="logoImage" src="{{url_for('static', filename='images/logo.jpeg')}}" alt="Logo">
+                <h1>Diree</h1><h2>: Note Yourself, Know Yourself...</h2>
+            </div> -->
+            <div class="log">
+                <img id="logoImage" src="{{url_for('static', filename='images/logo.jpeg')}}" alt="Logo">
+            </div>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='{{ url_for('main.AskAI') }}';">Ask AI</button>
+                <button onclick="window.location.href='{{ url_for('main.edit_entry') }}';">Dashboard</button>
+                <button onclick="window.location.href='{{ url_for('main.logout') }}';">Logout</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="text-boxes">
+            <form class="entry-form" method="POST" action="{{ url_for('main.newEntry') }}">
+                <label for="entry_text">Write your entry</label>
+                <textarea id="bigTextBox" name="bigTextBox" rows="10" placeholder="How was your day?"></textarea>
+                <input type="text" id="smallTextBox" name="smallTextBox"  placeholder="Day's Special"></input>
+                <button type="submit" id="uploadButton">Save Entry</button>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p>© 2023 Your Diary. All rights reserved. </p>
+            <button class="contact-button">Contact Us</button>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript to display today's date
+        const currentDate = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = currentDate.toLocaleDateString(undefined, options);
+    </script>
+</body>
+</html>

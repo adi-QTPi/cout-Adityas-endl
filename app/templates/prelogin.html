@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+DE+VA+Guides&family=Playwrite+VN:wght@100..400&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img id="logoImage" src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo">
+                <h1>Diree</h1><h2>: Note Yourself, Know Yourself...</h2>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="window.location.href='{{ url_for('main.login') }}';">Login</button>
+                <button onclick="window.location.href='{{ url_for('main.register') }}';">Signup</button>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <main>
+        <!-- Branding Section (Left Half) -->
+        <div id="branding">
+            <!-- <img src="taglineBackground.jpg" alt="Logo" id="logo"> -->
+            <h1 id="Banner-logo">Diree</h1>
+            <h2 id="tagline">
+                Note Yourself,<br> 
+                Know Yourself...
+            </h2>
+        </div>
+        <!-- Buttons Section (Right Half) -->
+        <div id="buttons">
+            <button class="entry-button" id="todays-entry" onclick="window.location.href='{{ url_for('main.login') }}';" >
+                <img src="{{ url_for('static', filename='images/todaysEntryImage.webp') }}" alt="Today's Entry" class="button-icon">
+                <span>Today's Entry</span>
+            </button>
+
+            <button class="entry-button" id="past-entries" onclick="window.location.href='{{ url_for('main.login') }}';">
+                <img src="{{ url_for('static', filename='images/pastEntries.png') }}" alt="Past Entries" class="button-icon">
+                <span>Past Entries</span>
+            </button>
+
+            <button class="entry-button" id="ask-ai" onclick="window.location.href='{{ url_for('main.login') }}';">
+                <img src="{{ url_for('static', filename='images/askAI.png') }}" alt="Ask Ai" class="button-icon">
+                <span>Ask Ai</span>
+            </button>
+        </div>
+    </main>
+
+
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2025 Your Diary. All rights reserved.</p>
+            <button class="contact-button">Contact Us</button>
+        </div>
+    </footer>
+</body>
+</html>

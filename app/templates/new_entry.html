@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}New Entry{% endblock %}
+{% block content %}
+    <h1>New Diary Entry</h1>
+    <form method="POST" action="{{ url_for('main.new_entry') }}">
+        <label for="entry_text">Write your entry</label>
+        <textarea id="entry_text" name="entry_text" rows="5" required></textarea>
+        <textarea id="summary" name="summary" rows="5" ></textarea>
+        <button type="submit">Save Entry</button>
+    </form>
+{% endblock %}

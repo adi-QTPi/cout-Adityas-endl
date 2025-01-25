@@ -1,0 +1,178 @@
+/* Reset some default styles */
+body, h1, h2, h3, h4, p, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient background */
+    color: #333;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Header styles */
+header {
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%; /* Ensure the header spans full width */
+    box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+#log {
+    position: absolute; /* Position the image absolutely */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Cover full width */
+    height: 100%; /* Cover full height */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
+    z-index: 1; /* Place the image behind the text */
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff7e5f;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    margin-left: auto; /* Push buttons to the far right */
+}
+
+.nav-buttons button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff7e5f; /* Button color */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-buttons button:hover {
+    background-color: #feb47b; /* Button hover color */
+    transform: scale(1.05);
+}
+
+/* Main content area */
+main {
+    /* display: flex; */
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    margin: 10px ;
+    max-width: 1010px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow-x: hidden; /* Prevent content overflow */
+}
+
+/* Calendar styles */
+/* Updated Calendar Styles */
+.calendar {
+    position: fixed;
+    top: 77px; /* Keep it well below the header */
+    right: 0; /* Align to the far right */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px; /* Increase padding for better spacing */
+    width: 400px; /* Increase width to make it larger */
+    height: calc(100vh - 120px); /* Make it span most of the viewport height */
+    font-size: 16px; /* Adjust font size for better readability */
+    z-index: 5;
+    border: 1px solid #ddd;
+    overflow-y: auto; /* Add scroll if content exceeds height */
+}
+
+.calendar .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; /* Add spacing below the header */
+}
+
+.calendar #monthYear {
+    font-size: 18px; /* Increase font size for better emphasis */
+    font-weight: bold;
+    color: #ff7e5f;
+}
+
+.calendar .days, .calendar .dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px; /* Add spacing between grid items */
+}
+
+.calendar .day, .calendar .date {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+    border-radius: 5px; /* Rounded corners for dates */
+}
+
+.calendar .date {
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.calendar .date:hover {
+    background-color: #ff7e5f;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo {
+        margin-right: 0; /* Reset margin for smaller screens */
+    }
+
+    nav {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .nav-buttons {
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 10px;
+    }
+
+      .calendar {
+        width: 100%; /* Take full width on smaller screens */
+        height: auto; /* Adjust height for smaller screens */
+        position: static; /* Remove fixed position for responsiveness */
+        margin-top: 20px;
+    }
+    main {
+        flex-direction: column;
+        padding: 15px;
+    }
+}
